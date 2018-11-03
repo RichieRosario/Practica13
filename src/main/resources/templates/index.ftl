@@ -88,7 +88,7 @@
         temperatura: Number,
         humedad: Number
     };
-    let timerId = setInterval(dibujarGrafica1(), INTERVAL+5,dibujarGrafica2(), INTERVAL+5);
+    let timerId = setInterval(dibujarGrafica1(), INTERVAL+1,dibujarGrafica2(), INTERVAL+1);
 
 
     (function worker() {
