@@ -16,8 +16,8 @@ public class Mensaje implements Serializable {
     @Column(name = "id", nullable = false, unique = true, updatable = false)
     private long id;
 
-    @Column(name = "fechaGeneracion")
-    public String fechaGeneracion;
+    @Column(name = "fechaCreacion")
+    public String fechaCreacion;
 
     @Column(name = "idDispositivo")
     public int idDispositivo;
@@ -32,12 +32,12 @@ public class Mensaje implements Serializable {
 
     private boolean deleted = false;
 
-    public String getFechaGeneracion() {
-        return fechaGeneracion;
+    public String getFechaCreacion() {
+        return fechaCreacion;
     }
 
-    public void setFechaGeneracion(String fechaGeneracion) {
-        this.fechaGeneracion = fechaGeneracion;
+    public void setFechaCreacion(String fechaCreacion) {
+        this.fechaCreacion = fechaCreacion;
     }
 
     public int getIdDispositivo() {
@@ -67,8 +67,8 @@ public class Mensaje implements Serializable {
     public Mensaje() {
     }
 
-    public Mensaje(String fechaGeneracion, int idDispositivo, double temperatura, double humedad) {
-        this.fechaGeneracion = fechaGeneracion;
+    public Mensaje(String fechaCreacion, int idDispositivo, double temperatura, double humedad) {
+        this.fechaCreacion = fechaCreacion;
         this.idDispositivo = idDispositivo;
         this.temperatura = temperatura;
         this.humedad = humedad;
@@ -94,7 +94,7 @@ public class Mensaje implements Serializable {
     public String toString() {
         return "Mensaje{" +
                 "id=" + id + '\'' +
-                "fechaGeneracion='" + fechaGeneracion + '\'' +
+                "fechaCreacion='" + fechaCreacion + '\'' +
                 ", idDispositivo='" + idDispositivo + '\'' +
                 ", temperatura=" + temperatura +
                 ", humedad=" + humedad +
