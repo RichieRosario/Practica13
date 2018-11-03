@@ -36,9 +36,9 @@
 <div class="panel-group container">
 <div class="panel panel-primary">
     <div class="panel-heading">Cliente 1</div>
-    <div class="panel-body">
-        <div id="grafico1">
-        </div>
+    <div class="panel-body chart-js">
+        <canvas id="myChart" width="713" height="356" style="display: block; width: 713px; height: 356px;"></canvas>
+
     </div>
 </div>
 
@@ -49,7 +49,7 @@
 <div class="panel panel-primary">
     <div class="panel-heading">Cliente 2</div>
     <div class="panel-body chart-js">
-        <canvas id="myChart" width="713" height="356" style="display: block; width: 713px; height: 356px;"></canvas>
+        <canvas id="myChart2" width="713" height="356" style="display: block; width: 713px; height: 356px;"></canvas>
 
     </div>
 </div>
@@ -68,20 +68,93 @@
 
 
 <script>
-    let timerId = setInterval(dibujarGrafica1(), 60000);
+    const INTERVAL = 5000;
+    var humedad1 = [];
+    var humedad2 = [];
+    var temperatura1 =[];
+    var temperatura2 = [];
+    var estructura1 = {
+        id: Number,
+        fechaGeneracion: String,
+        idDespositivo: Number,
+        temperatura: Number,
+        humedad: Number
+    };
 
-    function dibujarGrafica1() {
-        new Chart(document.getElementById("myChart"), {
+    var estructura2 = {
+        id: Number,
+        fechaGeneracion: String,
+        idDespositivo: Number,
+        temperatura: Number,
+        humedad: Number
+    };
+    let timerId = setInterval(dibujarGrafica1(), INTERVAL+5,dibujarGrafica2(), INTERVAL+5);
+
+
+    (function worker() {
+
+        $.ajax({
+            url: '/temp1',
+
+            error: function () {
+                console.log("An error ocurred.");
+            },
+
+            success: function (data) {
+                estructura1 = data;
+
+                temperatura1.push(estructura1.temperatura);
+
+                humedad1.push(estructura1.humedad);
+
+                window.myLine.update();
+            },
+            complete: function () {
+                // Schedule the next request when the current one's complete
+                setTimeout(worker, INTERVAL);
+            },
+            type: 'GET'
+        });
+    })();
+
+    (function worker2() {
+        $.ajax({
+            url: '/temp2',
+
+            error: function () {
+                console.log("An error ocurred.");
+            },
+
+            success: function (data) {
+                estructura2 = data;
+                temperatura2.push(estructura2.temperatura);
+
+                humedad2.push(estructura2.humedad);
+                window.myLine2.update();
+            },
+            complete: function () {
+                // Schedule the next request when the current one's complete
+                setTimeout(worker2, INTERVAL);
+            },
+            type: 'GET'
+        });
+    })();
+
+
+
+    function dibujarGrafica2() {
+
+        window.myLine2 =new Chart(document.getElementById("myChart2"), {
             type: 'line',
             data: {
                 labels: [1, 2, 3,4, 5, 6, 7, 8, 9, 10],
                 datasets: [{
-                    data: [86],
+                    data: temperatura2,
                     label: "Temperatura",
                     borderColor: "#3e95cd",
                     fill: false
                 }, {
-                    data: [282],
+                    data: humedad2,
                     label: "Humedad",
                     borderColor: "#e8c3b9",
                     fill: false
@@ -91,11 +164,44 @@
             options: {
                 title: {
                     display: true,
-                    text: 'Humedad/Temperatura vs Tiempo'
+                    text: 'Cliente #2 - Humedad/Temperatura vs Tiempo'
                 }
             }
         });
     }
+
+    function dibujarGrafica1() {
+
+
+
+
+       window.myLine =  new Chart(document.getElementById("myChart"), {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3,4, 5, 6, 7, 8, 9, 10],
+                datasets: [{
+                    data: temperatura1,
+                    label: "Temperatura",
+                    borderColor: "#3e95cd",
+                    fill: false
+                }, {
+                    data: humedad1,
+                    label: "Humedad",
+                    borderColor: "#e8c3b9",
+                    fill: false
+                }
+                ]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: 'Cliente #1 - Humedad/Temperatura vs Tiempo'
+                }
+            }
+        });
+    }
+
+
 
 
 

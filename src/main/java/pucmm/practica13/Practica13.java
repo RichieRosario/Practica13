@@ -19,6 +19,9 @@ import static pucmm.practica13.config.JmsConfig.notificacion_sensores;
 public class Practica13  {
 
 	static Productor p = new Productor();
+	public static String dispositivo1 = "1";
+	public static String dispositivo2 = "2";
+
 
 	public static void main(String[] args) {
 		SpringApplication.run(Practica13.class, args);
@@ -29,8 +32,8 @@ public class Practica13  {
 			@Override
 			public void run() {
 				try {
-					p.enviarMensaje(notificacion_sensores,"1");
-					p.enviarMensaje(notificacion_sensores,"2");
+					p.enviarMensaje(notificacion_sensores,dispositivo1);
+					p.enviarMensaje(notificacion_sensores,dispositivo2);
 				} catch (Exception ex) {
 					Thread t = Thread.currentThread();
 					t.getUncaughtExceptionHandler().uncaughtException(t, ex);
